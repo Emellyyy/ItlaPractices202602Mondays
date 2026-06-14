@@ -1,5 +1,5 @@
 ﻿using System;
-// Calcula
+// Calculadora :)
 {
     static void Main()
     {
