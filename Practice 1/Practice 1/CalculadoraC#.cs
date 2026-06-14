@@ -1,6 +1,5 @@
 ﻿using System;
-
-class Program
+// Calcula
 {
     static void Main()
     {
