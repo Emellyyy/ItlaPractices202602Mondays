@@ -1,5 +1,5 @@
 ﻿Console.WriteLine("Sistema de Registros de Estudiantes");
-// Emelly Victoria 2025-2504
+// Emelly Victoria 2025-2504 
 
 try
 {
