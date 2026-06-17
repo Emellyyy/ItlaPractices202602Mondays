@@ -1,211 +1,190 @@
-﻿static void Main()
+﻿Console.WriteLine("Sistema de Registros de Estudiantes");
+// Emelly Victoria 2025-2504
+
+try
 {
-    try
+    SistemaEstudiantes sistema = new SistemaEstudiantes();
+
+    bool running = true;
+    while (running)
     {
-        string opcion = "";
+        Console.Write("1. Agregar Estudiante      ");
+        Console.Write("2. Ver Estudiantes     ");
+        Console.Write("3. Buscar Estudiante      ");
+        Console.Write("4. Modificar Estudiante        ");
+        Console.Write("5. Eliminar Estudiante     ");
+        Console.WriteLine("6. Salir");
+        Console.Write("Elige una opción: ");
 
-        while (opcion != "0")
+        int choice = Convert.ToInt32(Console.ReadLine());
+
+        switch (choice)
         {
-            Console.WriteLine("\n1. Agregar estudiante");
-            Console.WriteLine("2. Buscar estudiante");
-            Console.WriteLine("3. Modificar estudiante");
-            Console.WriteLine("4. Eliminar estudiante");
-            Console.WriteLine("5. Ver todos los estudiantes");
-            Console.WriteLine("0. Salir");
-            Console.Write("Opcion: ");
-            opcion = Console.ReadLine();
+            case 1:
+                sistema.AgregarEstudiante();
+                break;
+            case 2:
+                sistema.VerEstudiantes();
+                break;
+            case 3:
+                sistema.BuscarEstudiante();
+                break;
+            case 4:
+                sistema.ModificarEstudiante();
+                break;
+            case 5:
+                sistema.EliminarEstudiante();
+                break;
+            case 6:
+                running = false;
+                break;
+            default:
+                Console.WriteLine("Opción no válida");
+                break;
+        }
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine("Ha ocurrido un error: " + ex.Message);
+}
 
-            if (opcion == "1")
+class Estudiante
+{
+    public int Id { get; set; }
+    public string Nombre { get; set; }
+    public string Apellido { get; set; }
+    public int Edad { get; set; }
+    public string Matricula { get; set; }
+    public string Carrera { get; set; }
+}
+
+class SistemaEstudiantes
+{
+    List<Estudiante> estudiantes = new List<Estudiante>();
+
+    public void AgregarEstudiante()
+    {
+        int id = estudiantes.Count + 1;
+
+        Console.Write("Digite el Nombre: ");
+        var nombre = Console.ReadLine();
+
+        Console.Write("Digite el Apellido: ");
+        var apellido = Console.ReadLine();
+
+        Console.Write("Digite la Edad: ");
+        var edad = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Digite la Matrícula: ");
+        var matricula = Console.ReadLine();
+
+        Console.Write("Digite la Carrera: ");
+        var carrera = Console.ReadLine();
+
+        estudiantes.Add(new Estudiante
+        {
+            Id = id,
+            Nombre = nombre,
+            Apellido = apellido,
+            Edad = edad,
+            Matricula = matricula,
+            Carrera = carrera
+        });
+
+        Console.WriteLine("Estudiante agregado");
+        Console.WriteLine();
+    }
+
+    public void VerEstudiantes()
+    {
+        Console.WriteLine("Id      Nombre          Apellido        Edad        Matrícula        Carrera");
+        Console.WriteLine("____________________________________________________________________________");
+
+        foreach (var e in estudiantes)
+        {
+            Console.WriteLine($"{e.Id}    {e.Nombre}      {e.Apellido}      {e.Edad}     {e.Matricula}     {e.Carrera}");
+        }
+    }
+
+    public void BuscarEstudiante()
+    {
+        VerEstudiantes();
+
+        Console.WriteLine("Digite un Id de Estudiante para Mostrar");
+        int idSeleccionado = Convert.ToInt32(Console.ReadLine());
+
+        foreach (var e in estudiantes)
+        {
+            if (e.Id == idSeleccionado)
             {
-                Estudiante e = new Estudiante();
-                e.Id = contador;
-
-                Console.Write("Ingrese el nombre del estudiante: ");
-                e.Nombre = Console.ReadLine();
-
-                Console.Write("Cual es su matricula: ");
-                e.Matricula = Console.ReadLine();
-
-                Console.Write("Cual es su cedula: ");
-                e.Cedula = Console.ReadLine();
-
-                Console.Write("Ingrese la materia: ");
-                e.Materia = Console.ReadLine();
-
-                Console.Write("Ingrese la nota: ");
-                string textoNota = Console.ReadLine();
-                double nota;
-
-                if (!double.TryParse(textoNota, out nota))
-                {
-                    Console.WriteLine("Eso no es una nota valida.");
-                }
-                else
-                {
-                    e.Nota = nota;
-                    lista.Add(e);
-                    contador++;
-                    Console.WriteLine("Estudiante registrado.");
-                }
-            }
-
-            if (opcion == "2")
-            {
-                Console.Write("Buscar por nombre, cedula o matricula: ");
-                string buscar = Console.ReadLine();
-
-                bool encontro = false;
-
-                for (int i = 0; i < lista.Count; i++)
-                {
-                    if (lista[i].Nombre.ToLower().Contains(buscar.ToLower()) ||
-                        lista[i].Cedula == buscar ||
-                        lista[i].Matricula == buscar)
-                    {
-                        Console.WriteLine("ID: " + lista[i].Id +
-                                          " | Nombre: " + lista[i].Nombre +
-                                          " | Matricula: " + lista[i].Matricula +
-                                          " | Cedula: " + lista[i].Cedula +
-                                          " | Materia: " + lista[i].Materia +
-                                          " | Nota: " + lista[i].Nota);
-
-                        encontro = true;
-                    }
-                }
-
-                if (!encontro)
-                {
-                    Console.WriteLine("No se encontro nada.");
-                }
-            }
-
-            if (opcion == "3")
-            {
-                Console.Write("Ingrese el ID del estudiante que desea modificar: ");
-                int id;
-
-                if (!int.TryParse(Console.ReadLine(), out id))
-                {
-                    Console.WriteLine("ID invalido.");
-                }
-                else
-                {
-                    bool encontro = false;
-
-                    for (int i = 0; i < lista.Count; i++)
-                    {
-                        if (lista[i].Id == id)
-                        {
-                            encontro = true;
-
-                            Console.Write("Nuevo nombre (" + lista[i].Nombre + "): ");
-                            string nombre = Console.ReadLine();
-                            if (nombre != "") lista[i].Nombre = nombre;
-
-                            Console.Write("Nueva matricula (" + lista[i].Matricula + "): ");
-                            string matricula = Console.ReadLine();
-                            if (matricula != "") lista[i].Matricula = matricula;
-
-                            Console.Write("Nueva cedula (" + lista[i].Cedula + "): ");
-                            string cedula = Console.ReadLine();
-                            if (cedula != "") lista[i].Cedula = cedula;
-
-                            Console.Write("Nueva materia (" + lista[i].Materia + "): ");
-                            string materia = Console.ReadLine();
-                            if (materia != "") lista[i].Materia = materia;
-
-                            Console.Write("Nueva nota (" + lista[i].Nota + "): ");
-                            string textoNota = Console.ReadLine();
-                            double nota;
-
-                            if (textoNota != "" && double.TryParse(textoNota, out nota))
-                            {
-                                lista[i].Nota = nota;
-                            }
-
-                            Console.WriteLine("Estudiante modificado.");
-                            break;
-                        }
-                    }
-
-                    if (!encontro)
-                    {
-                        Console.WriteLine("No se encontro ese estudiante.");
-                    }
-                }
-            }
-
-            if (opcion == "4")
-            {
-                Console.Write("Ingrese el ID del estudiante que desea eliminar: ");
-                int id;
-
-                if (!int.TryParse(Console.ReadLine(), out id))
-                {
-                    Console.WriteLine("ID invalido.");
-                }
-                else
-                {
-                    bool encontro = false;
-
-                    for (int i = 0; i < lista.Count; i++)
-                    {
-                        if (lista[i].Id == id)
-                        {
-                            encontro = true;
-
-                            Console.Write("Seguro que desea eliminar a " + lista[i].Nombre + "? (s/n): ");
-                            string conf = Console.ReadLine();
-
-                            if (conf == "s")
-                            {
-                                lista.RemoveAt(i);
-                                Console.WriteLine("Estudiante eliminado.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Cancelado.");
-                            }
-
-                            break;
-                        }
-                    }
-
-                    if (!encontro)
-                    {
-                        Console.WriteLine("No se encontro ese estudiante.");
-                    }
-                }
-            }
-
-            if (opcion == "5")
-            {
-                if (lista.Count == 0)
-                {
-                    Console.WriteLine("No hay estudiantes registrados.");
-                }
-                else
-                {
-                    for (int i = 0; i < lista.Count; i++)
-                    {
-                        Console.WriteLine("ID: " + lista[i].Id +
-                                          " | Nombre: " + lista[i].Nombre +
-                                          " | Matricula: " + lista[i].Matricula +
-                                          " | Cedula: " + lista[i].Cedula +
-                                          " | Materia: " + lista[i].Materia +
-                                          " | Nota: " + lista[i].Nota);
-                    }
-                }
-            }
-
-            if (opcion == "0")
-            {
-                Console.WriteLine("Adios.");
+                Console.Write($"Nombre: {e.Nombre} ");
+                Console.Write($"Apellido: {e.Apellido} ");
+                Console.Write($"Edad: {e.Edad} ");
+                Console.Write($"Matrícula: {e.Matricula} ");
+                Console.Write($"Carrera: {e.Carrera}");
+                Console.WriteLine();
             }
         }
     }
-    catch (Exception ex)
+
+    public void ModificarEstudiante()
     {
-        Console.WriteLine("Ocurrio un error: " + ex.Message);
+        VerEstudiantes();
+
+        Console.WriteLine("Digite un Id de Estudiante para Modificar");
+        int idSeleccionado = Convert.ToInt32(Console.ReadLine());
+
+        Estudiante seleccionado = null;
+
+        foreach (var e in estudiantes)
+        {
+            if (e.Id == idSeleccionado)
+                seleccionado = e;
+        }
+
+        Console.Write($"El nombre es: {seleccionado.Nombre}, Digite el Nuevo Nombre: ");
+        seleccionado.Nombre = Console.ReadLine();
+
+        Console.Write($"El apellido es: {seleccionado.Apellido}, Digite el Nuevo Apellido: ");
+        seleccionado.Apellido = Console.ReadLine();
+
+        Console.Write($"La edad es: {seleccionado.Edad}, Digite la Nueva Edad: ");
+        seleccionado.Edad = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write($"La matrícula es: {seleccionado.Matricula}, Digite la Nueva Matrícula: ");
+        seleccionado.Matricula = Console.ReadLine();
+
+        Console.Write($"La carrera es: {seleccionado.Carrera}, Digite la Nueva Carrera: ");
+        seleccionado.Carrera = Console.ReadLine();
+
+        Console.WriteLine("Estudiante modificado");
+    }
+
+    public void EliminarEstudiante()
+    {
+        VerEstudiantes();
+
+        Console.WriteLine("Digite un Id de Estudiante para Eliminar");
+        int idSeleccionado = Convert.ToInt32(Console.ReadLine());
+
+        Console.WriteLine("Seguro que desea eliminar? 1. Si, 2. No");
+        int opcion = Convert.ToInt32(Console.ReadLine());
+
+        if (opcion == 1)
+        {
+            Estudiante seleccionado = null;
+
+            foreach (var e in estudiantes)
+            {
+                if (e.Id == idSeleccionado)
+                    seleccionado = e;
+            }
+
+            estudiantes.Remove(seleccionado);
+
+            Console.WriteLine("Estudiante eliminado");
+        }
     }
 }
+```
