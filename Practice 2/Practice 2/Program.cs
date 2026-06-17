@@ -1,22 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-// Registro :)
-class Estudiante
+﻿static void Main()
 {
-    public int Id;
-    public string Nombre;
-    public string Matricula;
-    public string Cedula;
-    public string Materia;
-    public double Nota;
-}
-
-class Program
-{
-    static List<Estudiante> lista = new List<Estudiante>();
-    static int contador = 1;
-
-    static void Main()
+    try
     {
         string opcion = "";
 
@@ -51,6 +35,7 @@ class Program
                 Console.Write("Ingrese la nota: ");
                 string textoNota = Console.ReadLine();
                 double nota;
+
                 if (!double.TryParse(textoNota, out nota))
                 {
                     Console.WriteLine("Eso no es una nota valida.");
@@ -70,23 +55,35 @@ class Program
                 string buscar = Console.ReadLine();
 
                 bool encontro = false;
+
                 for (int i = 0; i < lista.Count; i++)
                 {
-                    if (lista[i].Nombre.ToLower().Contains(buscar.ToLower()) || lista[i].Cedula == buscar || lista[i].Matricula == buscar)
+                    if (lista[i].Nombre.ToLower().Contains(buscar.ToLower()) ||
+                        lista[i].Cedula == buscar ||
+                        lista[i].Matricula == buscar)
                     {
-                        Console.WriteLine("ID: " + lista[i].Id + " | Nombre: " + lista[i].Nombre + " | Matricula: " + lista[i].Matricula + " | Cedula: " + lista[i].Cedula + " | Materia: " + lista[i].Materia + " | Nota: " + lista[i].Nota);
+                        Console.WriteLine("ID: " + lista[i].Id +
+                                          " | Nombre: " + lista[i].Nombre +
+                                          " | Matricula: " + lista[i].Matricula +
+                                          " | Cedula: " + lista[i].Cedula +
+                                          " | Materia: " + lista[i].Materia +
+                                          " | Nota: " + lista[i].Nota);
+
                         encontro = true;
                     }
                 }
 
                 if (!encontro)
+                {
                     Console.WriteLine("No se encontro nada.");
+                }
             }
 
             if (opcion == "3")
             {
                 Console.Write("Ingrese el ID del estudiante que desea modificar: ");
                 int id;
+
                 if (!int.TryParse(Console.ReadLine(), out id))
                 {
                     Console.WriteLine("ID invalido.");
@@ -94,6 +91,7 @@ class Program
                 else
                 {
                     bool encontro = false;
+
                     for (int i = 0; i < lista.Count; i++)
                     {
                         if (lista[i].Id == id)
@@ -119,8 +117,11 @@ class Program
                             Console.Write("Nueva nota (" + lista[i].Nota + "): ");
                             string textoNota = Console.ReadLine();
                             double nota;
+
                             if (textoNota != "" && double.TryParse(textoNota, out nota))
+                            {
                                 lista[i].Nota = nota;
+                            }
 
                             Console.WriteLine("Estudiante modificado.");
                             break;
@@ -128,7 +129,9 @@ class Program
                     }
 
                     if (!encontro)
+                    {
                         Console.WriteLine("No se encontro ese estudiante.");
+                    }
                 }
             }
 
@@ -136,6 +139,7 @@ class Program
             {
                 Console.Write("Ingrese el ID del estudiante que desea eliminar: ");
                 int id;
+
                 if (!int.TryParse(Console.ReadLine(), out id))
                 {
                     Console.WriteLine("ID invalido.");
@@ -143,13 +147,16 @@ class Program
                 else
                 {
                     bool encontro = false;
+
                     for (int i = 0; i < lista.Count; i++)
                     {
                         if (lista[i].Id == id)
                         {
                             encontro = true;
+
                             Console.Write("Seguro que desea eliminar a " + lista[i].Nombre + "? (s/n): ");
                             string conf = Console.ReadLine();
+
                             if (conf == "s")
                             {
                                 lista.RemoveAt(i);
@@ -159,12 +166,15 @@ class Program
                             {
                                 Console.WriteLine("Cancelado.");
                             }
+
                             break;
                         }
                     }
 
                     if (!encontro)
+                    {
                         Console.WriteLine("No se encontro ese estudiante.");
+                    }
                 }
             }
 
@@ -178,13 +188,24 @@ class Program
                 {
                     for (int i = 0; i < lista.Count; i++)
                     {
-                        Console.WriteLine("ID: " + lista[i].Id + " | Nombre: " + lista[i].Nombre + " | Matricula: " + lista[i].Matricula + " | Cedula: " + lista[i].Cedula + " | Materia: " + lista[i].Materia + " | Nota: " + lista[i].Nota);
+                        Console.WriteLine("ID: " + lista[i].Id +
+                                          " | Nombre: " + lista[i].Nombre +
+                                          " | Matricula: " + lista[i].Matricula +
+                                          " | Cedula: " + lista[i].Cedula +
+                                          " | Materia: " + lista[i].Materia +
+                                          " | Nota: " + lista[i].Nota);
                     }
                 }
             }
 
             if (opcion == "0")
+            {
                 Console.WriteLine("Adios.");
+            }
         }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Ocurrio un error: " + ex.Message);
     }
 }
